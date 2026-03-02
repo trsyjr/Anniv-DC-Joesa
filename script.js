@@ -100,9 +100,9 @@ function spawnBalloons(quantity = 5) {
 }
 
 const claImages = [
-  "Assets/DC1.JPG", "Assets/DC2.JPG", "Assets/DC3.JPG", "Assets/DC4.jpg",
-  "Assets/DC5.JPG", "Assets/DC6.JPG", "Assets/DC7.jpg", "Assets/DC8.jpg",
-  "Assets/DC10.JPG", "Assets/DC11.jpg"
+  "Assets/DC1.png", "Assets/DC2.png", "Assets/DC3.png", "Assets/DC4.png",
+  "Assets/DC5.png", "Assets/DC6.png", "Assets/DC7.png", "Assets/DC8.png",
+  "Assets/DC10.png", "Assets/DC11.png"
 ];
 
 function shuffleArray(array) {
