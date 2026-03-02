@@ -1,16 +1,18 @@
 function revealCelebrants() {
   const landing = document.getElementById('landing');
   const celebrants = document.getElementById('celebrants');
+  const appreciationCla = document.getElementById('appreciation-cla');
   const floating = document.getElementById('floating-images');
   const nav = document.getElementById('nav-header');
 
   landing.classList.add('hidden');
   celebrants.classList.remove('hidden');
+  appreciationCla.classList.remove('hidden');
   floating.classList.remove('hidden');
   nav.classList.remove('hidden');
 
   const music = document.getElementById('bg-music');
-  music.play().catch(err => console.log("Audio waiting for user interaction."));
+  music.play().catch(err => console.log("Audio play blocked until user interacts."));
 
   launchConfetti();
   showFloatingImagesTurn();
@@ -20,14 +22,16 @@ function revealCelebrants() {
 function goBack() {
   const landing = document.getElementById('landing');
   const celebrants = document.getElementById('celebrants');
+  const appreciationCla = document.getElementById('appreciation-cla');
   const floating = document.getElementById('floating-images');
   const nav = document.getElementById('nav-header');
 
   landing.classList.remove('hidden');
   celebrants.classList.add('hidden');
+  appreciationCla.classList.add('hidden');
   floating.classList.add('hidden');
   nav.classList.add('hidden');
-  
+
   const extraImages = floating.querySelectorAll('img');
   extraImages.forEach(img => img.remove());
 }
@@ -54,7 +58,10 @@ function spawnBalloons(quantity = 5) {
   const container = document.getElementById("floating-images");
   if (container.classList.contains('hidden')) return;
 
-  const images = ["./Assets/23.png", "./Assets/Blue.png", "./Assets/Blueblue.png"];
+  const containerWidth = container.offsetWidth;
+  const containerHeight = container.offsetHeight;
+  // Ensure "Assets" matches your folder name exactly (Case Sensitive!)
+  const images = ["23.png", "Blue.png", "Blueblue.png"];
 
   for (let i = 0; i < quantity; i++) {
     const balloon = document.createElement("img");
@@ -63,8 +70,8 @@ function spawnBalloons(quantity = 5) {
 
     const size = Math.random() * (120 - 60) + 60;
     balloon.style.width = size + "px";
-    balloon.style.left = Math.random() * (container.offsetWidth - size) + "px";
-    balloon.style.top = Math.random() * (container.offsetHeight - size) + "px";
+    balloon.style.left = Math.random() * (containerWidth - size) + "px";
+    balloon.style.top = Math.random() * (containerHeight - size) + "px";
     balloon.style.animation = `floatUpBalloon ${Math.random() * 3 + 5}s linear forwards`;
 
     container.appendChild(balloon);
@@ -74,32 +81,51 @@ function spawnBalloons(quantity = 5) {
       balloon.classList.add("opacity-100");
     }, 50);
 
-    balloon.addEventListener("animationend", () => balloon.remove());
+    balloon.addEventListener("animationend", () => {
+      balloon.remove();
+      if (!container.classList.contains('hidden')) {
+        setTimeout(() => spawnBalloons(1), Math.random() * 2000 + 500);
+      }
+    });
   }
 }
 
 const claImages = [
-  "./Assets/DC1.png", "./Assets/DC2.png", "./Assets/DC3.png", 
-  "./Assets/DC4.png", "./Assets/DC5.png", "./Assets/DC6.png", 
-  "./Assets/DC7.png", "./Assets/DC10.png", "./Assets/DC11.png"
+  "DC1.png", "DC2.png", "DC3.png", "DC4.png",
+  "DC5.png", "DC6.png", "DC7.png", "DC8.png",
+  "DC10.png", "DC11.png"
 ];
+
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
 
 function showFloatingImagesTurn() {
   const container = document.getElementById("floating-images");
   if (container.classList.contains('hidden')) return;
 
+  const containerWidth = container.offsetWidth;
+  const images = shuffleArray(claImages);
   let index = 0;
-  const shuffled = [...claImages].sort(() => Math.random() - 0.5);
 
   function spawnNextImage() {
-    if (container.classList.contains('hidden') || index >= shuffled.length) return;
+    if (container.classList.contains('hidden')) return;
+    if (index >= images.length) {
+      setTimeout(showFloatingImagesTurn, 1500);
+      return;
+    }
 
     const img = document.createElement("img");
-    img.src = shuffled[index];
+    img.src = images[index];
     img.className = "floating-balloon opacity-0 absolute";
     const width = Math.random() * (480 - 320) + 320;
     img.style.width = width + "px";
-    img.style.left = Math.random() * (container.offsetWidth - width) + "px";
+    img.style.left = Math.random() * (containerWidth - width) + "px";
     img.style.animation = `floatUpBalloon ${Math.random() * 2 + 6}s linear forwards`;
 
     container.appendChild(img);
@@ -110,7 +136,7 @@ function showFloatingImagesTurn() {
 
     img.addEventListener("animationend", () => img.remove());
     index++;
-    setTimeout(spawnNextImage, 1000);
+    setTimeout(spawnNextImage, Math.random() * 200 + 800);
   }
   spawnNextImage();
 }
