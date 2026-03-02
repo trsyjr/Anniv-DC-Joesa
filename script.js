@@ -33,11 +33,18 @@ function goBack() {
   appreciationCla.classList.add('hidden');
   floating.classList.add('hidden');
   nav.classList.add('hidden');
+
+  // Optional: Pause music or keep it playing
+  // const music = document.getElementById('bg-music');
+  // music.pause();
+  // music.currentTime = 0;
   
   // Clean up any remaining floating images
   const extraImages = floating.querySelectorAll('img');
   extraImages.forEach(img => img.remove());
 }
+
+/* --- THE REST OF YOUR JS REMAINS THE SAME --- */
 
 function launchConfetti() {
   const colors = ['#3B82F6', '#60A5FA', '#93C5FD', '#1D4ED8', '#0EA5E9'];
@@ -59,11 +66,11 @@ function launchConfetti() {
 
 function spawnBalloons(quantity = 5) {
   const container = document.getElementById("floating-images");
-  if (container.classList.contains('hidden')) return;
+  if (container.classList.contains('hidden')) return; // Stop if hidden
 
   const containerWidth = container.offsetWidth;
   const containerHeight = container.offsetHeight;
-  const images = ["/Assets/23.png", "/Assets/Blue.png", "/Assets/Blueblue.png"];
+  const images = ["Assets/23.png", "Assets/Blue.png", "Assets/Blueblue.png"];
 
   for (let i = 0; i < quantity; i++) {
     const balloon = document.createElement("img");
@@ -93,9 +100,9 @@ function spawnBalloons(quantity = 5) {
 }
 
 const claImages = [
-  "/Assets/DC1.png", "/Assets/DC2.png", "/Assets/DC3.png", "/Assets/DC4.png",
-  "/Assets/DC5.png", "/Assets/DC6.png", "/Assets/DC7.png", "/Assets/DC8.png",
-  "/Assets/DC10.png", "/Assets/DC11.png"
+  "Assets/DC1.png", "Assets/DC2.png", "Assets/DC3.png", "Assets/DC4.png",
+  "Assets/DC5.png", "Assets/DC6.png", "Assets/DC7.png", "Assets/DC8.png",
+  "Assets/DC10.png", "Assets/DC11.png"
 ];
 
 function shuffleArray(array) {
